@@ -2,29 +2,7 @@
  * Created by donghyunkim on 2017. 3. 14..
  */
 
-/*
-    dom을 객체에 넣고 쉽게 사용한다
-    insertAdjacentHTML() 함수 찾아보기
-    페이지 처리
-    스콥을 나누기 위해 즉시 실행 함수를 사용한다.
-    setTimeout을 사용하면 좋지 않다.
-    계속 콜백함수를 불러야 할 수도 있다.
-    서버에서 html을 먼저 만들고 보내주는 것이 나은지 아니면 프로트엔드에서 하는 것이 좋은지는 명확하지 않다.
-    둘다 할수도 있다.
-    템플릿 작업을 하는 것이 좋다.
 
-    구독!!!
-
-
- */
- //
- // requirejs(["helper/util"], function(util) {
- //     //This function is called when scripts/helper/util.js is loaded.
- //     //If util.js calls define(), then this function is not fired until
- //     //util's dependencies have loaded, and the util argument will hold
- //     //the module value for "helper/util".
- // });
-//var Handlebars = require('handlebars');
 (function() {
 // ajax 부분
 
