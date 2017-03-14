@@ -29,10 +29,18 @@ header > ul > li {
     display: inline-block;
 }
 
+
+header > .paging {
+    text-align: right;
+    font-size: 1.2rem;
+}
+
 header > .btn {
     float: right;
     font-size: 1.2rem;
 }
+
+
 
 .left, .right {
     display: inline-block;

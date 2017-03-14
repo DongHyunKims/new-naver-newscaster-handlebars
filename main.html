@@ -18,7 +18,10 @@
             <li>전체언론사</li>
             <li>my뉴스</li>
         </ul>
+
         <div class="btn">
+            <span class="paging"></span>
+
             <div class="left"><a href="#"><</a></div>
             <div class="right"><a href="#">></a></div>
         </div>
@@ -34,7 +37,14 @@
 </div>
 
 
+
+
 <script src="main.js"></script>
+
+
+<script type="text/x-handlebars-template" id="pageTemplate">
+   {{currentPage}} / {{totalPage}}
+</script>
 
 <!-- mainArea에 입력 될 부분 실제 내용 부분  -->
 

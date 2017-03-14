@@ -28,12 +28,12 @@
 (function() {
 // ajax 부분
 
-    var jsonData;
+    var jsonDatas;
     var currentSite = 0;
 
     function runXHR() {
         function reqListener() {
-            jsonData = JSON.parse(this.responseText);
+            jsonDatas = JSON.parse(this.responseText);
             loadPage();
             //delegation은 상위 element에 리스너를 걸어주면 하위 자식 노드
             var listUl = document.querySelector(".mainArea>nav>ul");
@@ -61,12 +61,12 @@
 
 
     //페이지 로딩 함수
-    function loadPage() {
-
+    function loadPage(state) {
+        if(state === 0) currentSite++;
         var listTemplate = '<li class="{name}">{name}</li>';
         var listHtmlResult = "";
 
-        jsonData.forEach(function (val) {
+        jsonDatas.forEach(function (val) {
             listHtmlResult += listTemplate.replace(/{name}/g, val.title);
         });
 
@@ -76,9 +76,10 @@
         listDom.innerHTML = listHtmlResult;
         //console.log(jsonData);
 
-        if (jsonData.length !== 0) {
+        if (jsonDatas.length !== 0) {
             //replaceTemplate(jsonData[0]);
-            replaceHandlebarsTemplate(jsonData[0]);
+            replacePagingTemplate();
+            replaceHandlebarsTemplate(jsonDatas[0]);
         } else {
             var contentDom = document.querySelector(".content");
             contentDom.innerHTML = "";
@@ -88,7 +89,6 @@
 
 
     //탬플릿을 바꾸어주는 함수
-
     function replaceTemplate(jsonData) {
 
         var mainTemplate = document.querySelector("#newsTemplate").innerText;
@@ -139,38 +139,73 @@
         highLight();
     }
 
-    //리스트 클릭 핸들러
-    function listClickHandler(event) {
-        var seletedData = jsonData.filter(function (val, idx) {
-            if (val.title == event.target.innerText) {
-                currentSite = idx;
-                return true;
-            }
-        })[0];
 
-        replaceHandlebarsTemplate(seletedData);
+    function replacePagingTemplate() {
+        var pageTemplate = document.querySelector("#pageTemplate").innerText;
+        //console.log(pageTemplate);
+        var template = Handlebars.compile(pageTemplate);
+
+
+        var pagingData = {
+            "totalPage" : jsonDatas.length,
+            "currentPage" : jsonDatas.length==0 ? jsonDatas.length : currentSite +1
+        };
+
+
+        Handlebars.registerHelper("totalPage",function(){
+            return pagingData.totalPage;
+        });
+
+
+        Handlebars.registerHelper("currentPage",function(){
+            return pagingData.currentPage;
+        });
+
+
+        pageTemplate = template(pagingData);
+
+
+        var pagingDom = document.querySelector(".paging");
+        pagingDom.innerHTML = pageTemplate;
     }
+
+
     //색 강조 함수
     function highLight() {
         var dom = document.querySelectorAll("nav>ul>li");
         dom.forEach(function (value) {
             value.style.color = "black";
         });
-        document.querySelector("nav>ul>." + jsonData[currentSite].title).style.color = "blue";
+        document.querySelector("nav>ul>." + jsonDatas[currentSite].title).style.color = "blue";
     }
 
 
-//삭제 버튼 클릭 핸들러
+    //리스트 클릭 핸들러
+    function listClickHandler(event) {
+        var seletedData = jsonDatas.filter(function (val, idx) {
+            if (val.title == event.target.innerText) {
+                currentSite = idx;
+                return true;
+            }
+        })[0];
+        replacePagingTemplate();
+        replaceHandlebarsTemplate(seletedData);
+    }
+
+
+    //삭제 버튼 클릭 핸들러
     function buttonClickHandler() {
         var titleDom = document.querySelector(".newsName");
-        for (var i = 0; i < jsonData.length; i++) {
-            if (jsonData[i].title == titleDom.innerText) {
-                jsonData.splice(i, 1);
+        for (var i = 0; i < jsonDatas.length; i++) {
+            if (jsonDatas[i].title == titleDom.innerText) {
+                jsonDatas.splice(i, 1);
                 break;
             }
         }
+
         currentSite = 0;
-        loadPage(jsonData);
+        replacePagingTemplate();
+        loadPage();
     }
 
 //화살표 클릭 핸들러
@@ -181,19 +216,20 @@
             if (currentSite > 0) {
                 currentSite--;
             } else if (currentSite === 0) {
-                currentSite = jsonData.length - 1;
+                currentSite = jsonDatas.length - 1;
             }
 
         } else {
-            if (currentSite < jsonData.length - 1) {
+            if (currentSite < jsonDatas.length - 1) {
                 currentSite++;
-            } else if (currentSite === jsonData.length - 1) {
+            } else if (currentSite === jsonDatas.length - 1) {
                 currentSite = 0;
             }
         }
 
-        if (jsonData.length !== 0) {
-            replaceHandlebarsTemplate(jsonData[currentSite]);
+        if (jsonDatas.length !== 0) {
+            replacePagingTemplate();
+            replaceHandlebarsTemplate(jsonDatas[currentSite]);
         }
 
     }
