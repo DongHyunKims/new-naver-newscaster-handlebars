@@ -4,8 +4,7 @@
 
 
 (function() {
-// ajax 부분
-
+    // ajax 부분
     var jsonDatas;
     var currentSite = 0;
 
@@ -34,6 +33,8 @@
         oReq.send();
     }
 
+
+    //ajax 실행
     runXHR();
 
 
@@ -87,7 +88,7 @@
 
     }
 
-
+    //핸들바를 통해 탬플릿을 바꾸어 주는 함수
     function replaceHandlebarsTemplate(jsonData) {
         var mainTemplate = document.querySelector("#newsTemplate").innerText;
         var template = Handlebars.compile(mainTemplate);
@@ -186,7 +187,7 @@
         loadPage();
     }
 
-//화살표 클릭 핸들러
+    //화살표 클릭 핸들러
     function arrowClickHandler(event) {
 
         if (event.target.parentElement.className == "left") {

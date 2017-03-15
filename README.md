@@ -9,3 +9,6 @@
 
 ## handlebars 라이브러리를 사용
 -  main.html `<script  src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.js"></script>` 추가
+
+## 추가 사항
+- 구독 부분 구현
